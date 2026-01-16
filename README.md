@@ -13,3 +13,4 @@ Installation Instructions:
     [BepInEx Installation Guide.](https://docs.bepinex.dev/articles/user_guide/installation/index.html#where-to-download-bepinex)
 2. After installing BepInEx, run the game once so BepInEx can generate its default directory and file structure.
 3. Copy the NOCursorOverride FOLDER to the game's BepInEx plugins folder.
+4. To create your own custom cursor, make an PNG image with transparent background, and replace CursorImages/DefaultImage.png with it. Make sure the name MATCHES. Better support will be added later for customization if there is demand, or send a PR otherwise if you want. ^^
