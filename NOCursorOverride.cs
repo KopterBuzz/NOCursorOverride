@@ -8,11 +8,12 @@ public class NOCursorOverride : BaseUnityPlugin
     private Texture2D cursorTexture;
     private Vector2 cursorSize = new Vector2(32, 32);
     private bool cursorLoaded = false;
+    bool drawCursor = false;
 
     private void Awake()
     {
         LoadCursorTexture();
-        HideSystemCursor();
+        //Cursor.visible = false;
         DontDestroyOnLoad(this);
     }
 
@@ -38,19 +39,23 @@ public class NOCursorOverride : BaseUnityPlugin
         cursorTexture.filterMode = FilterMode.Point;
         cursorTexture.wrapMode = TextureWrapMode.Clamp;
 
+        Cursor.SetCursor(cursorTexture, new Vector2(cursorTexture.width / 2, cursorTexture.height / 2), CursorMode.Auto);
+
         cursorLoaded = true;
+
+
         Logger.LogInfo("Custom cursor loaded successfully.");
     }
 
     private void HideSystemCursor()
     {
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.None;
+        //Cursor.lockState = CursorLockMode.None;
     }
 
     private void OnGUI()
     {
-        if (!cursorLoaded || cursorTexture == null)
+        if (!cursorLoaded || !drawCursor || cursorTexture == null)
             return;
 
         Vector2 mousePos = Input.mousePosition;
@@ -71,9 +76,17 @@ public class NOCursorOverride : BaseUnityPlugin
     }
     private void Update()
     {
-        if (Cursor.visible)
+        //Cursor.visible = false;
+        if (CursorManager.Visible)
         {
-            Cursor.visible = false;
+            if (DynamicMap.i != null && DynamicMap.mapMaximized)
+            {
+                CursorManager.SetFlag(CursorFlags.Map, true);
+            }
+            drawCursor = true;
+        } else
+        {
+            drawCursor = false;
         }
     }
 
